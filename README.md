@@ -5,6 +5,9 @@ Astro + Tailwind CSS + TypeScript single-page tourism site for Cloudflare static
 ## Domain configuration
 Set the public domain only once in `astro.config.mjs` (`SITE`). When empty, the project omits absolute canonical/Open Graph URLs and disables `@astrojs/sitemap` so builds do not invent placeholder domains.
 
+## PWA
+The site ships a web app manifest (`public/manifest.webmanifest`), an installable `theme-color`, and a minimal offline service worker (`public/sw.js`, auto-registered in the page). For a fully installable PWA on all platforms, add a 512×512 icon to `public/icons` and reference it in the manifest.
+
 ## Build
 ```bash
 corepack enable

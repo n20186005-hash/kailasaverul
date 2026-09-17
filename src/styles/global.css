@@ -17,3 +17,10 @@ a{color:inherit}
 .btn-ghost{background:transparent;color:#eee6d6;border:1px solid rgba(238,230,214,.3)}
 summary{cursor:pointer;font-weight:750;color:#f3e6c9}
 iframe{border:0}
+.review-card{max-width:34rem}
+.review-score{font-size:3rem;font-family:serif;color:#f3e6c9;font-weight:800;line-height:1}
+.review-score .stars{color:#d7b66f}
+.review-count{color:#cfc5b1;margin-top:.25rem}
+.source-line{font-size:.85rem;color:#bdb29b;margin-top:1rem}
+.source-line a{color:#d7b66f;text-decoration:underline}
+.source-note{font-size:.82rem;color:#9c9384;margin-top:.6rem;line-height:1.55}
