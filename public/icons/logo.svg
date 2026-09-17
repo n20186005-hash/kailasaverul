@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 96" role="img" aria-label="कैलास मंदिर">
+ <rect width="320" height="96" rx="18" fill="#171713"/>
+ <g transform="translate(16 12)" fill="none" stroke="#d7b66f" stroke-width="4">
+  <path d="M9 63h70M18 63V35l26-23 26 23v28M29 63V39h30v24M36 31h16M40 24h8"/>
+  <path d="M14 69h60" opacity=".65"/>
+ </g>
+ <text x="106" y="42" fill="#eee6d6" font-size="22" font-family="serif" font-weight="700">श्री कैलास मंदिर</text>
+ <text x="106" y="68" fill="#c8a96b" font-size="14" font-family="sans-serif">वेरूळ · राष्ट्रकूट वारसा</text>
+</svg>
