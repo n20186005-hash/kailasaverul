@@ -1,0 +1,210 @@
+---
+// Server-side current conditions + multi-day forecast for Verul, with visitor-facing
+// advice generated from the data. Fetched at build/render time (no API key) and embedded
+// into the static page (cached).
+const LAT = 20.023742;
+const LON = 75.178939;
+const PLACE = 'Verul, Maharashtra';
+
+const wmo = (code: number): [string, string] => {
+  const map: Record<number, [string, string]> = {
+    0: ['Clear sky', '☀️'], 1: ['Mainly clear', '🌤️'], 2: ['Partly cloudy', '⛅'], 3: ['Overcast', '☁️'],
+    45: ['Fog', '🌫️'], 48: ['Rime fog', '🌫️'],
+    51: ['Light drizzle', '🌦️'], 53: ['Drizzle', '🌦️'], 55: ['Dense drizzle', '🌧️'],
+    56: ['Freezing drizzle', '🌧️'], 57: ['Freezing drizzle', '🌧️'],
+    61: ['Light rain', '🌧️'], 63: ['Rain', '🌧️'], 65: ['Heavy rain', '🌧️'],
+    66: ['Freezing rain', '🌧️'], 67: ['Freezing rain', '🌧️'],
+    71: ['Light snow', '🌨️'], 73: ['Snow', '🌨️'], 75: ['Heavy snow', '🌨️'], 77: ['Snow grains', '🌨️'],
+    80: ['Rain showers', '🌦️'], 81: ['Rain showers', '🌧️'], 82: ['Violent showers', '⛈️'],
+    85: ['Snow showers', '🌨️'], 86: ['Snow showers', '🌨️'],
+    95: ['Thunderstorm', '⛈️'], 96: ['Thunderstorm, hail', '⛈️'], 99: ['Thunderstorm, hail', '⛈️']
+  };
+  return map[code] ?? ['—', '🌡️'];
+};
+
+const beaufort = (kmh: number): number => {
+  const t = [1, 5, 11, 19, 28, 38, 49, 61, 74, 88, 102, 117];
+  let lvl = 0;
+  for (let i = 0; i < t.length; i++) if (kmh > t[i]) lvl = i + 1;
+  return lvl;
+};
+
+let data: any = null;
+let error = false;
+try {
+  const url =
+    `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}` +
+    `&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_gusts_10m,uv_index` +
+    `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset,uv_index_max` +
+    `&timezone=Asia%2FKolkata&forecast_days=7&wind_speed_unit=kmh`;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 8000);
+  const res = await fetch(url, { signal: ctrl.signal, headers: { 'User-Agent': 'kailasaverul/1.0' } });
+  clearTimeout(timer);
+  if (res.ok) data = await res.json();
+  else error = true;
+} catch {
+  error = true;
+}
+
+// ----- Visitor-facing advice engine (conditions -> plain-language suggestions) -----
+const advice: { outfit: string[]; activity: string[]; items: string[]; risk: string[] } = {
+  outfit: [], activity: [], items: [], risk: []
+};
+
+if (data) {
+  const cur = data.current;
+  const day = data.daily;
+  const code: number = cur.weather_code;
+  const pop: number = day.precipitation_probability_max?.[0] ?? 0;
+  const max: number = day.temperature_2m_max?.[0] ?? cur.temperature_2m;
+  const min: number = day.temperature_2m_min?.[0] ?? cur.temperature_2m;
+  const uv: number = cur.uv_index ?? day.uv_index_max?.[0] ?? 0;
+  const windLvl = beaufort(cur.wind_speed_10m ?? 0);
+
+  const rainCat = [51, 53, 55, 56, 57, 61, 80].includes(code) ? 'light'
+    : [63, 81].includes(code) ? 'moderate'
+    : [65, 82].includes(code) ? 'heavy'
+    : [95, 96, 99].includes(code) ? 'thunder'
+    : 'none';
+
+  // Temperature / clothing
+  if (max >= 32) {
+    advice.outfit.push(`High of about ${Math.round(max)}°C — light, breathable clothing works best.`);
+    advice.activity.push('Avoid the midday heat: keep outdoor walking to morning or late afternoon.');
+    advice.items.push('Sunscreen, sunglasses, a hat and plenty of drinking water.');
+  } else if (min <= 10) {
+    advice.outfit.push(`Down to about ${Math.round(min)}°C at night — bring a warm layer or scarf.`);
+    advice.items.push('A warm jacket.');
+  } else if (max - min > 8) {
+    advice.outfit.push(`Big day–night swing (~${Math.round(max - min)}°C) — carry a layer you can add or remove.`);
+  }
+
+  // UV
+  if (uv >= 5) {
+    advice.outfit.push('UV is strong — cover up and reapply sunscreen through the day.');
+    advice.items.push('Sunscreen, sunglasses, a sun hat.');
+  }
+
+  // Precipitation probability / rain
+  if (pop >= 60 && rainCat === 'none') {
+    advice.outfit.push(`About ${pop}% chance of rain — take rain gear just in case.`);
+    advice.activity.push('Favour the covered cave corridors; stone steps get slippery when wet.');
+    advice.items.push('An umbrella or raincoat.');
+  }
+  if (rainCat === 'light') {
+    advice.outfit.push('Light rain — paths and rock steps are slippery, walk with care.');
+    advice.activity.push('Open-air viewing is less pleasant; use shaded cave areas between showers.');
+    advice.items.push('A compact umbrella.');
+  } else if (rainCat === 'moderate') {
+    advice.outfit.push('Steady rain — a waterproof jacket is the better call.');
+    advice.activity.push('Limit time outdoors; cliff-top ledges are slick in rain.');
+    advice.items.push('A raincoat (long umbrellas are awkward in crowds).');
+  } else if (rainCat === 'heavy') {
+    advice.risk.push('Heavy rain — avoid low-lying or cliff-edge areas and don’t linger under overhangs.');
+    advice.activity.push('Skip extended outdoor exploring; indoor cave sections are safer today.');
+    advice.items.push('A raincoat; skip the long-handled umbrella in the wind.');
+  } else if (rainCat === 'thunder') {
+    advice.risk.push('Thunderstorms around — do not climb, and never shelter under trees or against rock faces.');
+    advice.activity.push('Water-based or high-point activities are off; stay in covered areas.');
+  }
+
+  // Wind
+  if (windLvl >= 7) {
+    advice.risk.push(`Strong wind (about ${windLvl} Bft) — keep away from edges, hoardings and loose rock.`);
+    advice.activity.push('Open-air and elevated spots are best avoided.');
+  } else if (windLvl >= 5) {
+    advice.outfit.push(`Breezy (about ${windLvl} Bft) — a hat may blow off, and loose long clothing is awkward.`);
+    advice.activity.push('Take extra care on exposed steps and viewpoints.');
+  }
+
+  // Fog
+  if ([45, 48].includes(code)) {
+    advice.risk.push('Foggy — visibility is poor, so distant rock-face views and photos won’t deliver today.');
+    advice.items.push('A mask if air feels hazy.');
+  }
+
+  // Clear / cloudy (no active hazard)
+  if (rainCat === 'none' && advice.risk.length === 0) {
+    if ([0, 1].includes(code)) {
+      advice.outfit.push('Clear and pleasant — good for a full outdoor visit and photos.');
+      advice.activity.push('Great light for the basalt carvings; sunrise/sunset tones are worth catching.');
+    } else if ([2, 3].includes(code)) {
+      advice.outfit.push('Soft, even light — comfortable for a long outdoor stroll.');
+      advice.activity.push('Ideal for photography without harsh glare.');
+    }
+  }
+
+  // Dedupe items
+  advice.items = [...new Set(advice.items)];
+}
+---
+
+<section class="section" id="weather">
+  <div class="shell" style="max-width:1000px">
+    <div class="kicker">Live conditions</div>
+    <h2 style="font-family:serif;font-size:2.7rem;margin:.4rem 0 1.2rem">Weather in Verul &amp; Upcoming Days</h2>
+
+    {error || !data ? (
+      <div class="card">
+        <p style="color:#d8cfbd">Current conditions are temporarily unavailable. Check a local forecast before you travel — especially during the monsoon months, when steps can be slippery.</p>
+      </div>
+    ) : (
+      <>
+        <div class="card weather-now">
+          <div class="weather-main">
+            <div class="weather-icon">{wmo(data.current.weather_code)[1]}</div>
+            <div>
+              <div class="weather-temp">{Math.round(data.current.temperature_2m)}°C</div>
+              <div class="weather-desc">{wmo(data.current.weather_code)[0]}</div>
+              <div class="weather-sub">
+                Feels like {Math.round(data.current.apparent_temperature)}°C · Humidity {data.current.relative_humidity_2m}% · Wind {Math.round(data.current.wind_speed_10m)} km/h{data.current.uv_index ? ` · UV ${Math.round(data.current.uv_index)}` : ''}
+              </div>
+            </div>
+          </div>
+          <div class="weather-meta">
+            Observed {new Date(data.current.time).toLocaleString('en-IN', { weekday: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' })} · {PLACE}
+          </div>
+        </div>
+
+        {advice.risk.length > 0 && (
+          <div class="advice-risk">
+            <strong>⚠️ Heads-up:</strong> {advice.risk.join(' ')}
+          </div>
+        )}
+
+        <div class="advice-grid">
+          {advice.outfit.length > 0 && (
+            <div class="advice-col">
+              <h4>👕 What to wear</h4>
+              <ul>{advice.outfit.map((t) => <li>{t}</li>)}</ul>
+            </div>
+          )}
+          {advice.activity.length > 0 && (
+            <div class="advice-col">
+              <h4>🗺️ How to plan</h4>
+              <ul>{advice.activity.map((t) => <li>{t}</li>)}</ul>
+            </div>
+          )}
+          {advice.items.length > 0 && (
+            <div class="advice-col">
+              <h4>🎒 Bring along</h4>
+              <ul>{advice.items.map((t) => <li>{t}</li>)}</ul>
+            </div>
+          )}
+        </div>
+
+        <div class="weather-forecast">
+          {data.daily.time.map((d: string, i: number) => (
+            <div class="weather-day">
+              <div class="wd-name">{new Date(d + 'T00:00').toLocaleDateString('en-IN', { weekday: 'short' })}</div>
+              <div class="wd-icon">{wmo(data.daily.weather_code[i])[1]}</div>
+              <div class="wd-temp">{Math.round(data.daily.temperature_2m_max[i])}° / {Math.round(data.daily.temperature_2m_min[i])}°</div>
+              <div class="wd-pop">💧 {data.daily.precipitation_probability_max[i]}%</div>
+            </div>
+          ))}
+        </div>
+      </>
+    )}
+  </div>
+</section>

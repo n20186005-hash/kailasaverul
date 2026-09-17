@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Weather from '../components/Weather.astro';
 const SITE_URL = 'https://kailasaverul.com';
 const canonical = SITE_URL + '/';
 const heroImage = 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/88/Kailasa_temple_overview%2C_Ellora.jpg/1280px-Kailasa_temple_overview%2C_Ellora.jpg';
@@ -70,7 +71,7 @@ const faqEn = {'@context':'https://schema.org','@type':'FAQPage','mainEntity':[
 <script is:inline>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}</script>
 </head>
 <body class="texture">
-<header class="shell" style="display:flex;justify-content:space-between;align-items:center;padding:1rem 0;gap:1rem"><a href="#top"><img src="/icons/logo.svg" alt="श्री कैलास मंदिर" width="240" height="72" /></a><nav style="display:flex;gap:.9rem;flex-wrap:wrap;font-size:.93rem"><a href="#visit">भेट नियोजन</a><a href="#around">आजूबाजूला</a><a href="#guide">Guide</a><a href="#reviews">Reviews</a><a href="#faq">FAQ</a></nav></header>
+<header class="shell" style="display:flex;justify-content:space-between;align-items:center;padding:1rem 0;gap:1rem"><a href="#top"><img src="/icons/logo.svg" alt="श्री कैलास मंदिर" width="240" height="72" /></a><nav style="display:flex;gap:.9rem;flex-wrap:wrap;font-size:.93rem"><a href="#visit">भेट नियोजन</a><a href="#around">आजूबाजूला</a><a href="#guide">Guide</a><a href="#weather">Weather</a><a href="#getting-here">Getting here</a><a href="#services">Services</a><a href="#itineraries">Itinerary</a><a href="#stories">Stories</a><a href="#reviews">Reviews</a><a href="#faq">FAQ</a></nav></header>
 <main id="top">
 <section class="shell" style="padding:2rem 0 5rem;display:grid;grid-template-columns:1.05fr .95fr;gap:2rem;align-items:center">
  <div><div class="kicker">वेरूळ · महाराष्ट्र · लेणे क्रमांक १६</div><h1 style="font-family:serif;font-size:clamp(3rem,7vw,6.4rem);line-height:.96;margin:.7rem 0 1.2rem">दगडातून<br/>उलगडलेला <span style="color:#d7b66f">कैलास</span></h1><p style="font-size:1.16rem;color:#d8cfbd;max-width:46rem">राष्ट्रकूट काळातील श्री कैलास मंदिर हे एलोरा समूहातील सर्वात प्रसिद्ध एकशिळा स्थापत्यांपैकी एक. मंदिराचा मोठा भाग एकाच बेसॉल्ट खडकातून वरून खाली कोरत घडवला गेला.</p><div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.5rem"><a class="btn" href="#visit">भेट आखा</a><a class="btn btn-ghost" href={mapsShare} rel="noopener">Google Maps</a></div><div style="display:flex;gap:.65rem;flex-wrap:wrap;margin-top:1.6rem"><span class="badge">★ 4.8 · 10,133 Google</span><span class="badge">UNESCO Ellora समूह</span><span class="badge">राष्ट्रकूट · कृष्ण I</span></div></div>
@@ -120,6 +121,94 @@ const faqEn = {'@context':'https://schema.org','@type':'FAQPage','mainEntity':[
  <div class="kicker">Heritage</div>
  <h2 style="font-family:serif;font-size:2.7rem;margin:.4rem 0 1.2rem">History &amp; Significance of Rashtrakuta Era Shree Kailas Mandir</h2>
  <p style="max-width:62rem">Carved from a single basalt cliff during the Rashtrakuta period (often attributed to King Krishna I, 8th century), the Kailasa Temple is the largest monolithic rock-cut structure in the world. The entire complex was excavated top-down from the rock, depicting Shiva-related narratives, the Ravana lifting Kailasa episode, and richly carved mandapas and pillars.</p>
+</div></section>
+
+<Weather />
+
+<!-- Seasonal travel strategy -->
+<section class="section" id="seasons"><div class="shell">
+ <div class="kicker">Best time to visit</div>
+ <h2 style="font-family:serif;font-size:2.7rem;margin:.4rem 0 1.2rem">Seasonal Travel Strategy</h2>
+ <p style="max-width:62rem;color:#cfc5b1">The Deccan plateau around Verul has three pronounced seasons. The table below summarises typical long-term climate patterns to help you choose when to come.</p>
+ <div class="table-wrap"><table class="info-table">
+  <thead><tr><th>Season</th><th>Months</th><th>Climate</th><th>Crowd &amp; comfort</th><th>Recommendation</th></tr></thead>
+  <tbody>
+   <tr><td>Winter</td><td>Oct – Feb</td><td>Dry, ~12–28°C, clear skies</td><td>Pleasant; peak tourist season</td><td>Best window — comfortable for walking the rock-cut complex all day.</td></tr>
+   <tr><td>Summer</td><td>Mar – May</td><td>Hot, ~30–42°C, dry</td><td>Quiet; midday heat harsh</td><td>Go early morning or late afternoon; carry water and use shade.</td></tr>
+   <tr><td>Monsoon</td><td>Jun – Sep</td><td>Rainy, ~22–32°C, lush</td><td>Green but slippery steps</td><td>Scenic and calm; wear grippy footwear and avoid wet ledges.</td></tr>
+  </tbody>
+ </table></div>
+</div></section>
+
+<!-- Detailed transport guide -->
+<section class="section" id="getting-here"><div class="shell">
+ <div class="kicker">Getting here</div>
+ <h2 style="font-family:serif;font-size:2.7rem;margin:.4rem 0 1.5rem">How to Reach Kailasa Verul</h2>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+  <div class="card"><h3>By air</h3><p>Nearest airport: Chhatrapati Sambhaji Nagar Airport (IXU). From the airport, take a taxi or a bus into the city, then continue by road to Ellora (~30 km).</p></div>
+  <div class="card"><h3>By rail</h3><p>Nearest major station: Chhatrapati Sambhaji Nagar (AWB). Connect by road (bus or taxi) to Verul / Ellora.</p></div>
+  <div class="card"><h3>By road &amp; public bus</h3><p>State road-transport buses run from the city central bus stand to Ellora. Shared autos and taxis also cover the last stretch from the highway.</p></div>
+  <div class="card"><h3>By taxi / cab</h3><p>App-based and phone taxis operate from the city to Ellora. Agree on the fare or use the meter before starting; a round trip with waiting time is common.</p></div>
+  <div class="card"><h3>Within Ellora</h3><p>The cave group is spread out — walk between clusters and use the optional shuttle where available. Sturdy footwear is recommended.</p></div>
+  <div class="card"><h3>Drive &amp; park</h3><p>Private vehicles can be parked near the entrance; two-wheeler and four-wheeler parking are available. Avoid the hottest midday hours.</p></div>
+ </div>
+</div></section>
+
+<!-- Visitor services & facilities (type-neutral) -->
+<section class="section" id="services"><div class="shell">
+ <div class="kicker">Visitor services</div>
+ <h2 style="font-family:serif;font-size:2.7rem;margin:.4rem 0 1.5rem">Facilities &amp; Nearby Amenities</h2>
+ <p style="max-width:62rem;color:#cfc5b1">As a non-commercial guide we list service <em>types</em> only — not specific businesses — so you can plan neutrally.</p>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+  <div class="card"><h3>Restrooms (WC)</h3><p>Public toilet blocks are provided near the entrance complex; carry your own tissue and sanitizer, as supplies vary through the day.</p></div>
+  <div class="card"><h3>Parking</h3><p>Designated two-wheeler and four-wheeler parking is available near the entrance; an attendant may collect a nominal fee.</p></div>
+  <div class="card"><h3>Food &amp; drink</h3><p>Small tea stalls and snack eateries sit near the entrance and in Verul village. For a fuller meal or more choice, the city (Chhatrapati Sambhaji Nagar) has the widest range.</p></div>
+  <div class="card"><h3>Lodging</h3><p>Options span budget dharamshalas and guesthouses to mid-range hotels, in Verul and the nearby city. Book ahead in the winter peak season.</p></div>
+  <div class="card"><h3>Shops &amp; essentials</h3><p>Souvenir, book and water stalls line the approach; pharmacies and grocery stores in Verul village cover basic needs.</p></div>
+  <div class="card"><h3>Fuel &amp; EV charging</h3><p>Petrol pumps serve the highway towns; EV charging is still limited in the area, so plan your range or charge in the city before the trip.</p></div>
+ </div>
+</div></section>
+
+<!-- Itineraries -->
+<section class="section" id="itineraries"><div class="shell">
+ <div class="kicker">Plan your visit</div>
+ <h2 style="font-family:serif;font-size:2.7rem;margin:.4rem 0 1.2rem">Suggested Itineraries</h2>
+ <h3 style="font-family:serif;font-size:1.5rem;margin:1.1rem 0 .6rem">By traveller type</h3>
+ <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem">
+  <div class="card"><h3>Family with kids</h3><p>Arrive early, keep to shaded hours, focus on the main Kailasa courtyard and a few accessible caves, carry water and snacks, use the shuttle.</p></div>
+  <div class="card"><h3>Photography &amp; nature</h3><p>Golden-hour light on the basalt — mornings for east-facing carvings, late afternoon for warm tones. Tripods may need permission.</p></div>
+  <div class="card"><h3>Low-effort / accessible</h3><p>Prioritise level pathways and the Kailasa viewing platform; rest in shade, avoid steep inner staircases, plan short bursts.</p></div>
+ </div>
+ <h3 style="font-family:serif;font-size:1.5rem;margin:1.4rem 0 .6rem">General routes</h3>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+  <div class="card"><h3>Half-day</h3><p>Entrance → Kailasa (Cave 16) courtyard → a few neighbouring caves → viewpoint → exit. About 2.5–3 hours.</p></div>
+  <div class="card"><h3>Full-day</h3><p>All major cave clusters + Kailasa + museum + nearby Grishneshwar, with a lunch break. About 5–6 hours including travel.</p></div>
+ </div>
+</div></section>
+
+<!-- Stories, history & legend (science enrichment) -->
+<section class="section" id="stories"><div class="shell">
+ <div class="kicker">Stories &amp; significance</div>
+ <h2 style="font-family:serif;font-size:2.7rem;margin:.4rem 0 1.2rem">The Making of Kailasa — History, Legend &amp; Craft</h2>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
+  <div class="card"><h3>A mountain carved downwards</h3><p>Unlike most temples built upward, Kailasa was excavated top-down from a single basalt cliff — freeing a freestanding shrine, gateway, pillars and the great Nandi pavilion from the living rock.</p></div>
+  <div class="card"><h3>The Ravana legend</h3><p>Shaiva tradition links the site to Shiva's mountain home. Carvings depict Ravana shaking Mount Kailasa to win Shiva's favour — a theme repeated across the temple walls.</p></div>
+  <div class="card"><h3>Rashtrakuta patronage</h3><p>Scholars often attribute the core work to King Krishna I (8th century) of the Rashtrakuta dynasty, a powerful Deccan power that championed Shaiva art and architecture.</p></div>
+  <div class="card"><h3>Why it matters</h3><p>It is among the largest monolithic rock-cut structures on Earth and a centrepiece of the UNESCO Ellora ensemble — a benchmark for ancient engineering and devotional art.</p></div>
+ </div>
+</div></section>
+
+<!-- Visitor responsibility -->
+<section class="section" id="responsibility"><div class="shell" style="max-width:62rem">
+ <div class="kicker">Visitor responsibility</div>
+ <h2 style="font-family:serif;font-size:2.7rem;margin:.4rem 0 1.2rem">Protecting Kailasa for the Next Visitor</h2>
+ <ul class="tips">
+  <li>Do not touch, lean on, or climb the carvings — skin oils and pressure accelerate erosion of the stone.</li>
+  <li>Carry out all litter; use the bins provided near the entrance.</li>
+  <li>Respect the living temple: keep voices low and follow local dress and conduct norms.</li>
+  <li>Conserve water and avoid single-use plastic where you can.</li>
+  <li>Follow marked paths and barriers; wet or broken rock is hazardous in the monsoon.</li>
+ </ul>
 </div></section>
 
 <!-- Google reviews (display only, with source attribution; NOT in JSON-LD) -->

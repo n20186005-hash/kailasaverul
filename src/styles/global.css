@@ -24,3 +24,33 @@ iframe{border:0}
 .source-line{font-size:.85rem;color:#bdb29b;margin-top:1rem}
 .source-line a{color:#d7b66f;text-decoration:underline}
 .source-note{font-size:.82rem;color:#9c9384;margin-top:.6rem;line-height:1.55}
+.weather-now{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap}
+.weather-main{display:flex;gap:1rem;align-items:center}
+.weather-icon{font-size:3.4rem;line-height:1}
+.weather-temp{font-size:3rem;font-family:serif;font-weight:800;color:#f3e6c9}
+.weather-desc{color:#e7dcc6;font-size:1.05rem}
+.weather-sub{color:#bdb29b;font-size:.85rem;margin-top:.2rem}
+.weather-meta{color:#9c9384;font-size:.8rem;text-align:right}
+.weather-forecast{display:grid;grid-template-columns:repeat(7,1fr);gap:.5rem;margin-top:1.1rem}
+.weather-day{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:.7rem .4rem;text-align:center}
+.wd-name{color:#cfc5b1;font-size:.78rem}
+.wd-icon{font-size:1.6rem;margin:.25rem 0}
+.wd-temp{font-size:.85rem;color:#f3e6c9}
+.wd-pop{font-size:.72rem;color:#9c9384;margin-top:.15rem}
+.table-wrap{overflow-x:auto;margin-top:1rem}
+.info-table{width:100%;border-collapse:collapse;min-width:640px;font-size:.92rem}
+.info-table th,.info-table td{border-bottom:1px solid rgba(255,255,255,.1);padding:.7rem .8rem;text-align:left;vertical-align:top}
+.info-table th{color:#f3e6c9;font-weight:700;background:rgba(255,255,255,.03)}
+.info-table td{color:#d8cfbd}
+.tips{list-style:disc;padding-left:1.3rem;color:#d8cfbd;line-height:1.9}
+.tips li{margin:.3rem 0}
+@media(max-width:640px){.weather-forecast{grid-template-columns:repeat(3,1fr)}}
+.advice-risk{background:rgba(190,40,40,.18);border:1px solid rgba(220,90,90,.5);color:#ffdada;border-radius:12px;padding:.9rem 1rem;margin-top:1.1rem;font-size:.92rem;line-height:1.6}
+.advice-risk strong{color:#ff9a9a}
+.advice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.1rem}
+.advice-col{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:1rem 1.1rem}
+.advice-col h4{color:#f3e6c9;font-size:.95rem;margin:0 0 .55rem;font-family:serif}
+.advice-col ul{list-style:none;padding:0;margin:0}
+.advice-col li{color:#d8cfbd;font-size:.88rem;line-height:1.55;padding-left:1.15rem;position:relative;margin:.4rem 0}
+.advice-col li::before{content:'✓';position:absolute;left:0;color:#7fcf8f;font-weight:700}
+@media(max-width:900px){.advice-grid{grid-template-columns:1fr}}
