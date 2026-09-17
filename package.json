@@ -13,9 +13,7 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "esbuild",
-      "@rolldown/*",
-      "@img/*"
+      "esbuild"
     ]
   },
   "dependencies": {
