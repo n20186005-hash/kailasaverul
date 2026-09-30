@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kailasaverul.com/sitemap-index.xml
