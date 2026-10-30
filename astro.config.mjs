@@ -9,7 +9,7 @@ export default defineConfig({
   site: SITE || undefined,
   output: 'static',
   integrations: [
-    ...(SITE ? [sitemap()] : [])
+    ...(SITE ? [sitemap({filter:url=>!/(?:404)(?:\/|\.html|$)/.test(url)})] : [])
   ],
   vite: {
     plugins: [tailwindcss()]

@@ -4,17 +4,14 @@
   "version": "1.0.0",
   "type": "module",
   "packageManager": "pnpm@12.4.2",
-  "engines": {"node": "24.21.0"},
+  "engines": {
+    "node": "24.21.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
     "build": "astro build",
     "preview": "astro preview"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.4",

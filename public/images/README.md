@@ -1,5 +1,11 @@
-# प्रतिमा
-या प्रकल्पात वेबसाइट रेंडर करताना Wikimedia Commons वरील प्रत्यक्ष छायाचित्रांचे URL वापरले आहेत, कारण या बिल्ड वातावरणात बाह्य बायनरी डाउनलोडसाठी DNS उपलब्ध नव्हता. उत्पादनासाठी खालील CC परवानाधारक मूळ फोटो येथे डाउनलोड करून स्थानिक path वर बदलणे उत्तम:
-- kailasa-overview.jpg — Ms Sarah Welch — CC BY-SA 4.0
-- kailasanatha-elephants.jpg — Vyacheslav Argenberg — CC BY 4.0
-- kailasa-elephants-base.jpg — Prof Ranga Sai — CC BY-SA 4.0
+# Photograph source and modifications
+
+Current local JPEG derivatives use Ms Sarah Welch's 2016-09-12 photograph:
+https://commons.wikimedia.org/wiki/File:Kailasa_temple_overview,_Ellora.jpg
+
+Photography licence: CC BY-SA 4.0
+https://creativecommons.org/licenses/by-sa/4.0/
+
+Crop: original3264×2448 → upper3264×1200, excluding lower visitor areas. Resize to800/1600pixels and JPEG-compress; social derivative is padded to1200×630. The crop depicts historical upper architectural details, not the whole monument or current conditions. Derived images retain CC BY-SA4.0 and do not imply photographer endorsement or grant additional subject rights.
+
+Visible per-file attribution/source/licence/change notes are provided at /#image-credits. The earlier other two external photographs are no longer used.

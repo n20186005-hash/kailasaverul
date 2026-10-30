@@ -1,23 +1,35 @@
-# राष्ट्रकूटकालीन श्री कैलास मंदिर, वेरूळ
+# Kailasa Temple (Ellora Cave16), Verul guide
 
-Astro + Tailwind CSS + TypeScript single-page tourism site for Cloudflare static Workers assets.
+A Marathi/English single-page static Astro guide, separate from ASI, UNESCO and temple management. Active content and exact FAQ pairs are in `src/data/guide.ts`.
 
-## Domain configuration
-Set the public domain only once in `astro.config.mjs` (`SITE`). When empty, the project omits absolute canonical/Open Graph URLs and disables `@astrojs/sitemap` so builds do not invent placeholder domains.
+## Reproducible local build
 
-## PWA
-The site ships a web app manifest (`public/manifest.webmanifest`), an installable `theme-color`, and a minimal offline service worker (`public/sw.js`, auto-registered in the page). For a fully installable PWA on all platforms, add a 512×512 icon to `public/icons` and reference it in the manifest.
+Use the existing Node24.21.0 and pnpm12.4.2 versions:
 
-## Build
-```bash
-corepack enable
-pnpm install
+```sh
+pnpm install --frozen-lockfile
 pnpm check
-pnpm build
+pnpm run build
 ```
 
-## Cloudflare
-`wrangler.jsonc` points Cloudflare Workers static assets to `dist/`. Deploy with your normal Wrangler/Cloudflare CI workflow after `pnpm build`.
+All original application dependency versions and lockfile are retained. The exact locked `esbuild@0.28.2` lifecycle script is permitted by `pnpm-workspace.yaml`; blanket script permission is not enabled. The existing exact Astro release-age exception remains in place.
 
-## Note about this delivered environment
-The authoring sandbox had outbound DNS disabled for npm and image binary downloads. Source code and configuration are included, but the lockfile could not be fully resolved or the requested clean-network install/check/build sequence executed here. Run `pnpm install --lockfile-only` once in a networked environment before enforcing `--frozen-lockfile`.
+`dist/` is tracked in the original repository and also ignored. After a build, explicitly stage new/deleted hashed CSS, JS, images, sitemap and404 output alongside source changes with `git add -f dist`. Do not publish private audit exports or diagnostics.
+
+## Native Cloudflare assets and wrapper
+
+The confirmed project is `kailasaverul`. `worker.mjs` enforces public HTTP/www canonical redirects before the ASSETS binding, preserving path/query, adds response security headers and ensures explicit error aliases return404. `wrangler.jsonc` retains the existing compatibility date and static-output architecture; no new domain binding is configured.
+
+The historical official deployment used `npx wrangler deploy` with Wrangler4.144.0. Use that exact CLI version for local dry-run/dev (`npx --yes wrangler@4.144.0 deploy --dry-run`, or the equivalent pinned local executable) and review future deployment CLI changes. Wrangler remains outside the application dependency/lock tree.
+
+For a native local preview after building, use `npx --yes wrangler@4.144.0 dev --port 8941`. No publication is part of this local command.
+
+## Content and services
+
+Sources reviewed2026-10-29 (LosAngelesdate) are linked on the page. ASI's listed opening/rates are attributed to its Ellora Caves page, not promised as final checkout/current availability. UNESCO coordinates identify the ensemble, not a surveyed Cave16 entrance. Google Maps review data is a dated manual snapshot, not site-collected or automatically synchronized.
+
+Only a documented historical upper-detail photo crop is delivered; photography attribution does not establish all subject rights. See the visible image section and `public/images/README.md`. The original icons/brand are retained.
+
+Weather is browser-fetched, freshness-validated regional model data. Errors clear values; no stale build-time forecast or climatology substitute is labelled live. Google Analytics retains its original automatic loading, with actual privacy/data-flow disclosure and external provider opt-out information; no local consent control or legal-compliance claim is made. Cloudflare hosting/possible independent WebAnalytics is disclosed separately. Old site-specific offline caches are retired.
+
+Local checks and a candidate commit are not production acceptance. Independent browser, official exact-commit Cloudflare build and live-domain/runtime checks remain required before release acceptance.
