@@ -1,0 +1,15 @@
+---
+import TopicPage from '../../components/TopicPage.astro';
+import { TOPICS } from '../../data/topics';
+
+export function getStaticPaths() {
+  return TOPICS.filter(t => t.slug.startsWith('nearby/')).map(topic => ({
+    params: { topic: topic.slug.slice('nearby/'.length) },
+    props: { topic }
+  }));
+}
+
+export const dynamicParams = false;
+const { topic } = Astro.props;
+---
+<TopicPage topic={topic} />

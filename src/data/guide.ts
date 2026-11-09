@@ -1,4 +1,7 @@
+// ASI Ellora Caves listing consulted on this date (opening hours and admission rates).
 export const checked='2026-10-29';
+// Google Maps rating / review snapshot checked on this date (user-confirmed 4.8 / 10,185).
+export const ratingsChecked='2026-11-09';
 export const sources={asi:'https://asi.nic.in/pages/WorldHeritageElloraCaves',unesco:'https://whc.unesco.org/en/list/243/',maps:'https://maps.app.goo.gl/uXVXeifZKjAZLyCG9',tickets:'https://eticket.webfront.in/asi/',photo:'https://commons.wikimedia.org/wiki/File:Kailasa_temple_overview,_Ellora.jpg',license:'https://creativecommons.org/licenses/by-sa/4.0/'};
 export const sections=[
  {id:'guide',mr:'कैलास मंदिर आणि एलोरा समूह',en:'Kailasa Temple and the Ellora ensemble',paragraphs:[
@@ -37,7 +40,7 @@ export const sections=[
   {mr:'ASI च्या मते एलोरा अजिंठ्यासारखे विस्मृतीत हरवले नव्हते आणि जुन्या प्रवाशांच्या नोंदी उपलब्ध आहेत.',en:'ASI states that Ellora, unlike Ajanta, was never lost to oblivion and records visits by earlier travellers.'}
  ]},
  {id:'reviews',mr:'Google नकाशा — दिनांकित झलक',en:'Google Maps — a dated snapshot',paragraphs:[
-  {mr:'४.८ / ५ · १०,१७५ अभिप्राय. Google नकाशावरील माहिती २०२६-१०-२९ रोजी हाताने तपासली; ती आपोआप अद्ययावत होत नाही. हे या संकेतस्थळाने गोळा केलेले अभिप्राय नाहीत. मूळ लेखक आणि Google यांचे हक्क कायम आहेत; ताज्या माहितीसाठी मूळ नोंद उघडा.',en:'4.8 / 5 from 10,175 reviews. Manually checked on Google Maps on 2026-10-29; this snapshot does not update automatically. These are not reviews collected by this guide. Rights remain with the original authors and Google; open the original listing for current data.'}
+  {mr:'४.८ / ५ · १०,१८५ अभिप्राय. Google नकाशावरील माहिती २०२६-११-०९ रोजी हाताने तपासली; ती आपोआप अद्ययावत होत नाही. हे या संकेतस्थळाने गोळा केलेले अभिप्राय नाहीत. मूळ लेखक आणि Google यांचे हक्क कायम आहेत; ताज्या माहितीसाठी मूळ नोंद उघडा.',en:'4.8 / 5 from 10,185 reviews. Manually checked on Google Maps on 2026-11-09; this snapshot does not update automatically. These are not reviews collected by this guide. Rights remain with the original authors and Google; open the original listing for current data.'}
  ]}
 ] as const;
 export const faq=[

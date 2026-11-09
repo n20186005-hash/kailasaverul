@@ -26,7 +26,7 @@ For a native local preview after building, use `npx --yes wrangler@4.144.0 dev -
 
 ## Content and services
 
-Sources reviewed2026-10-29 (LosAngelesdate) are linked on the page. ASI's listed opening/rates are attributed to its Ellora Caves page, not promised as final checkout/current availability. UNESCO coordinates identify the ensemble, not a surveyed Cave16 entrance. Google Maps review data is a dated manual snapshot, not site-collected or automatically synchronized.
+ASI sources reviewed 2026-10-29 (Los Angeles date) are linked on the page. ASI's listed opening/rates are attributed to its Ellora Caves page, not promised as final checkout/current availability. UNESCO coordinates identify the ensemble, not a surveyed Cave 16 entrance. The Google Maps rating snapshot (4.8 / 10,185 reviews) was manually checked 2026-11-09; it is a dated third-party snapshot, not site-collected or automatically synchronized. The two dates are kept separate because the ASI listing was not re-consulted on 2026-11-09.
 
 Only a documented historical upper-detail photo crop is delivered; photography attribution does not establish all subject rights. See the visible image section and `public/images/README.md`. The original icons/brand are retained.
 

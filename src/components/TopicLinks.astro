@@ -1,0 +1,15 @@
+---
+import { TOPIC_GROUPS, TOPIC_GROUP_ORDER, topicsByGroup, topicPath, TOPIC_COUNT } from '../data/topics';
+---
+<section class="section" id="guides"><div class="shell">
+  <h2 lang="mr">विषयानुसार मार्गदर्शक <span lang="en">Explore Kailasa Temple and Ellora by topic</span></h2>
+  <p lang="en">{TOPIC_COUNT} independent English guides on visiting Cave 16, its history and architecture, transport and itineraries, the other Ellora caves, and food and accommodation around Verul. Each page has its own title, sources and verification notes.</p>
+  {TOPIC_GROUP_ORDER.map(group => <section class="topic-group" id={'guides-' + group} aria-labelledby={'guides-' + group + '-title'}>
+    <h3 id={'guides-' + group + '-title'}>{TOPIC_GROUPS[group].label}</h3>
+    <p class="small">{TOPIC_GROUPS[group].blurb}</p>
+    <div class="topic-grid">
+      {topicsByGroup(group).map(t => <a class="card topic-card" lang="en" href={topicPath(t.slug)}><strong>{t.h1}</strong><span>{t.metaDescription}</span></a>)}
+    </div>
+  </section>)}
+  <p class="small">These pages are an independent, unofficial guide. Prices, opening status, transport and facilities are dated listings to verify with ASI or the provider before travelling; no business or hotel is named without verification.</p>
+</div></section>

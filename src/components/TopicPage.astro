@@ -1,0 +1,203 @@
+---
+import '../styles/global.css';
+import { sources, checked } from '../data/guide';
+import { TOPIC_GROUPS, PAGE_REVIEWED, topicPath, relatedTopics, type Topic } from '../data/topics';
+
+interface Props { topic: Topic }
+const { topic } = Astro.props;
+
+const origin = 'https://kailasaverul.com';
+const canonical = origin + topicPath(topic.slug);
+const attractionId = origin + '/#attraction';
+const websiteId = origin + '/#website';
+const dateISO = '2026-11-09';
+const image = origin + '/images/kailasa-social.jpg';
+const photoAlt = 'Historical 2016 photograph cropped to Kailasa Temple’s upper rock-cut facades at Ellora Cave 16';
+const groupLabel = TOPIC_GROUPS[topic.group].label;
+const related = relatedTopics(topic);
+const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const mapsHref = topic.mapsQuery
+  ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(topic.mapsQuery)
+  : sources.maps;
+const insideEllora = /^nearby\/(ellora-cave|indra-sabha)/.test(topic.slug);
+const showPhoto = ['photography-guide', 'architecture', 'sculptures', 'ravana-sculpture'].includes(topic.slug);
+
+const crumbs = [
+  { name: 'Kailasa Temple Verul', item: origin + '/' },
+  { name: groupLabel, item: origin + '/#guides' },
+  { name: topic.h1, item: canonical }
+];
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  '@id': canonical + '#breadcrumb',
+  itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.item }))
+};
+
+const webPageLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': canonical + '#webpage',
+  url: canonical,
+  name: topic.metaTitle,
+  description: topic.metaDescription,
+  inLanguage: 'en',
+  about: { '@id': attractionId },
+  isPartOf: { '@id': websiteId },
+  breadcrumb: { '@id': canonical + '#breadcrumb' },
+  dateModified: dateISO
+};
+
+const placeLd = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristAttraction',
+  '@id': canonical + '#place',
+  name: topic.h1,
+  description: topic.metaDescription,
+  url: canonical,
+  inLanguage: 'en',
+  ...(insideEllora
+    ? { containedInPlace: { '@type': 'TouristAttraction', name: 'Ellora Caves', sameAs: sources.unesco } }
+    : { address: { '@type': 'PostalAddress', addressRegion: 'Maharashtra', addressCountry: 'IN' } })
+};
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  '@id': canonical + '#article',
+  headline: topic.h1,
+  description: topic.metaDescription,
+  inLanguage: 'en',
+  datePublished: dateISO,
+  dateModified: dateISO,
+  author: { '@type': 'Organization', name: 'Kailasa Verul independent guide', url: origin + '/' },
+  publisher: { '@type': 'Organization', name: 'Kailasa Verul independent guide', url: origin + '/' },
+  about: { '@id': attractionId },
+  mainEntityOfPage: { '@id': canonical + '#webpage' }
+};
+
+const itemListLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  '@id': canonical + '#itinerary',
+  name: topic.h1,
+  itemListElement: (topic.stops || []).map((stop, i) => ({ '@type': 'ListItem', position: i + 1, name: stop }))
+};
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': canonical + '#faq',
+  mainEntity: topic.faqs.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a }
+  }))
+};
+
+const schema = [
+  breadcrumbLd,
+  webPageLd,
+  topic.kind === 'place' ? placeLd : articleLd,
+  ...(topic.stops ? [itemListLd] : []),
+  faqLd
+];
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>{topic.metaTitle}</title>
+<meta name="description" content={topic.metaDescription}/>
+<meta name="robots" content="index,follow,max-image-preview:large"/>
+<link rel="canonical" href={canonical}/>
+<meta property="og:type" content={topic.kind === 'place' ? 'website' : 'article'}/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Kailasa Verul independent guide"/>
+<meta property="og:title" content={topic.metaTitle}/>
+<meta property="og:description" content={topic.metaDescription}/>
+<meta property="og:url" content={canonical}/>
+<meta property="og:image" content={image}/>
+<meta property="og:image:type" content="image/jpeg"/>
+<meta property="og:image:alt" content={photoAlt}/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content={topic.metaTitle}/>
+<meta name="twitter:description" content={topic.metaDescription}/>
+<meta name="twitter:image" content={image}/>
+<meta name="twitter:image:alt" content={photoAlt}/>
+<meta name="theme-color" content="#171713"/>
+<link rel="manifest" href="/manifest.webmanifest"/>
+<link rel="icon" href="/icons/favicon.svg"/>
+{schema.map(x => <script type="application/ld+json" is:inline set:html={JSON.stringify(x)}/>)}
+<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP"></script>
+<script is:inline>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-HXM22WWPKP');</script>
+</head>
+<body>
+<a href="#main" class="skip">Skip to content</a>
+<header><div class="shell header-shell">
+  <a href="/" class="brand"><img src="/icons/logo.svg" alt="Kailasa Verul independent guide — home" width="240" height="72"/></a>
+  <details class="menu"><summary>Guides ▾</summary><nav aria-label="Topic groups">
+    <a href="/#guides">All 40 topic guides</a>
+    <a href="/#guides-visit">{TOPIC_GROUPS.visit.label}</a>
+    <a href="/#guides-culture">{TOPIC_GROUPS.culture.label}</a>
+    <a href="/#guides-routes">{TOPIC_GROUPS.routes.label}</a>
+    <a href="/#guides-nearby">{TOPIC_GROUPS.nearby.label}</a>
+    <a href="/#guides-services">{TOPIC_GROUPS.services.label}</a>
+  </nav></details>
+  <a class="plain-link" href="/">Main guide</a>
+</div></header>
+
+<main id="main">
+<section class="section hero" id="top"><div class="shell">
+  <div class="kicker">{topic.kicker}</div>
+  <h1>{topic.h1}</h1>
+  <p class="lead">{topic.lead}</p>
+  <p><a class="btn" href={mapsHref} target="_blank" rel="noopener noreferrer">Google Maps ↗</a> <a class="btn btn-ghost" href={sources.asi} target="_blank" rel="noopener noreferrer">ASI source listing ↗</a></p>
+  {topic.mapsQuery && <p class="small">The map button opens a Google Maps search for this place; it is not a verified place listing or a surveyed entrance.</p>}
+  <p class="badge">Independent guide · Page reviewed {PAGE_REVIEWED} · ASI listing consulted {checked}</p>
+  <p class="small">Kailasa Temple (Cave 16) is one monument within the UNESCO-listed Ellora Caves. Prices, opening status and routes are dated listings to re-check, not live confirmations.</p>
+  {showPhoto && <figure class="photo-frame"><img class="photo" src="/images/kailasa-upper-1600.jpg" srcset="/images/kailasa-upper-800.jpg 800w,/images/kailasa-upper-1600.jpg 1600w" sizes="(max-width:1200px) 100vw,1180px" width="1600" height="588" alt={photoAlt} loading="lazy"/><figcaption>Ms Sarah Welch · 2016-09-12 · CC BY-SA 4.0. Historical upper architectural detail of Kailasa Temple, cropped from the original; not a current full view. <a href="/#image-credits">Source and licence</a></figcaption></figure>}
+</div></section>
+
+<nav class="section breadcrumb-shell" aria-label="Breadcrumb"><div class="shell">
+  <ol class="breadcrumb">
+    {crumbs.map((c, i) => <li>{i < crumbs.length - 1 ? <a href={c.item}>{c.name}</a> : <span aria-current="page">{c.name}</span>}</li>)}
+  </ol>
+</div></nav>
+
+{topic.sections.map(s => <section class="section" id={slugify(s.heading)}><div class="shell prose">
+  <h2>{s.heading}</h2>
+  {s.paragraphs.map(p => <p>{p}</p>)}
+  {s.bullets && <ul>{s.bullets.map(b => <li>{b}</li>)}</ul>}
+  {s.note && <p class="small note">{s.note}</p>}
+</div></section>)}
+
+{topic.facts && <section class="section" id="practical-facts"><div class="shell"><h2>Practical facts</h2><div class="table-wrap"><table><caption>{topic.h1} — verified-scope summary</caption><tbody>{topic.facts.map(f => <tr><th scope="row">{f.label}</th><td>{f.value}</td></tr>)}</tbody></table></div><p class="small">Only fields supported by ASI or UNESCO material, or explicitly marked for confirmation, are shown here. No rating, fee or opening hour is claimed as verified.</p></div></section>}
+
+{topic.stops && <section class="section" id="route-order"><div class="shell"><h2>Suggested order</h2><ol class="route-list">{topic.stops.map(stop => <li>{stop}</li>)}</ol><p class="small">An order of attention, not a timed guarantee. Closed areas, conservation work and your own pace take priority.</p></div></section>}
+
+<section class="section" id="faq"><div class="shell"><h2>Frequently asked questions</h2>{topic.faqs.map(f => <details class="card faq"><summary>{f.q}</summary><p>{f.a}</p></details>)}</div></section>
+
+<section class="section" id="related"><div class="shell"><h2>Related guides</h2><div class="topic-grid">{related.map(r => <a class="card topic-card" href={topicPath(r.slug)}><strong>{r.h1}</strong><span>{TOPIC_GROUPS[r.group].label}</span></a>)}</div><p><a href="/#guides">Browse all topic guides</a> · <a href="/">Return to the Kailasa Temple main guide</a></p></div></section>
+
+<section class="section" id="sources"><div class="shell"><h2>Sources and review limits</h2>
+  <p>Page reviewed {PAGE_REVIEWED}. The ASI Ellora Caves page was consulted {checked}; that review is not an on-site inspection, and no clear page-update date was visible on the ASI listing. A Google Maps snapshot or a UNESCO property coordinate is not a verified entrance, ticket counter or accessibility survey.</p>
+  <ul>
+    <li><a href={sources.asi}>Archaeological Survey of India: Ellora Caves</a> — identity, historical attribution, listed opening hours and admission categories.</li>
+    <li><a href={sources.unesco}>UNESCO World Heritage Centre: Ellora Caves</a> — the 1983 inscription, the ensemble and its artistic significance.</li>
+    <li><a href={sources.tickets}>ASI official ticket service</a> — check the actual visit date, eligibility and current charge.</li>
+    <li><a href={sources.maps}>Google Maps: Kailasa Temple</a> — dated manual snapshot, not site-collected reviews.</li>
+  </ul>
+  <p class="small">No business name, price, timetable, distance, star rating or review score is published here without verification. Temporary closures, conservation work and special orders may override any general listing.</p>
+</div></section>
+</main>
+
+<footer class="section"><div class="shell">
+  <p>An independent, unofficial nonprofit tourism and educational information guide, separate from ASI, UNESCO and temple management. The published images and the home page design are retained unchanged.</p>
+  <p><a href="/">Kailasa Temple main guide</a> · <a href="/#guides">All topic guides</a> · <a href="/#privacy">Privacy and services</a></p>
+  <p class="small">Google Analytics loads automatically on this page and may use cookies; see the <a href="/#privacy">privacy notes on the main guide</a> and Google’s <a href="https://tools.google.com/dlpage/gaoptout">external browser opt-out tool</a>. External links open a third-party service with its own policies.</p>
+</div></footer>
+</body>
+</html>
