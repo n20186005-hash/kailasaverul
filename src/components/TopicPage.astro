@@ -19,6 +19,12 @@ const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').repla
 const mapsHref = topic.mapsQuery
   ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(topic.mapsQuery)
   : sources.maps;
+const destinationSources: Record<string, string> = {
+  'nearby/grishneshwar-temple': 'https://maharashtratourism.gov.in/temple/ghrishneshwar/',
+  'nearby/daulatabad-fort': 'https://maharashtratourism.gov.in/fort/devgiri-daulatabad/',
+  'nearby/bibi-ka-maqbara': 'https://maharashtratourism.gov.in/heritage/bibi-ka-maqbara/'
+};
+const destinationSource = destinationSources[topic.slug];
 const insideEllora = /^nearby\/(ellora-cave|indra-sabha)/.test(topic.slug);
 const showPhoto = ['photography-guide', 'architecture', 'sculptures', 'ravana-sculpture'].includes(topic.slug);
 
@@ -185,6 +191,7 @@ const schema = [
 <section class="section" id="sources"><div class="shell"><h2>Sources and review limits</h2>
   <p>Page reviewed {PAGE_REVIEWED}. The ASI Ellora Caves page was consulted {checked}; that review is not an on-site inspection, and no clear page-update date was visible on the ASI listing. A Google Maps snapshot or a UNESCO property coordinate is not a verified entrance, ticket counter or accessibility survey.</p>
   <ul>
+    {destinationSource && <li><a href={destinationSource}>Maharashtra Tourism: {topic.h1}</a> — destination-specific background and travel information; confirm current access and rules with the site.</li>}
     <li><a href={sources.asi}>Archaeological Survey of India: Ellora Caves</a> — identity, historical attribution, listed opening hours and admission categories.</li>
     <li><a href={sources.unesco}>UNESCO World Heritage Centre: Ellora Caves</a> — the 1983 inscription, the ensemble and its artistic significance.</li>
     <li><a href={sources.tickets}>ASI official ticket service</a> — check the actual visit date, eligibility and current charge.</li>
